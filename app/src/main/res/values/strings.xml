@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">FirstLineCode</string>
+    <string name="game_name">数独游戏</string>
+
+    <string name="jump">跳关</string>
+    <string name="next">下一关</string>
+    <string name="answer">答案</string>
+    <string name="check">检查</string>
+    <string name="reset">重置</string>
+    <string name="clear">清理</string>
+    <string name="rebuild">重建</string>
+
+</resources>
