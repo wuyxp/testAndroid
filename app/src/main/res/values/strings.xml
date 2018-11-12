@@ -10,4 +10,6 @@
     <string name="clear">清理</string>
     <string name="rebuild">重建</string>
 
+    <string name="calculator_name">计算器</string>
+
 </resources>
