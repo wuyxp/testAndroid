@@ -12,7 +12,12 @@
         android:theme="@style/AppTheme"
         >
         <activity android:name=".FirstActivity" />
-        <activity android:name=".CalculatorActivity">
+        <activity
+            android:name=".CalculatorActivity"
+            android:theme="@style/Base.Animation.AppCompat.Dialog"
+            />
+        <activity android:name=".SudoActivity"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -24,9 +29,6 @@
                     android:host="java-lang-programming"
                     android:scheme="android-app-google-plus-demo" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity">
-
         </activity>
     </application>
 
