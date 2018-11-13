@@ -32,7 +32,9 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
     private Button compute;
     private Button point;
 
-    private String result = "";
+    private String result = ""; // 当前结果
+    private String current = ""; //保存的临时结果
+    private char type = '+'; //保存的临时计算符号
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,12 +97,24 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         c.setOnClickListener(this);
         ac.setOnClickListener(this);
 
+        addition.setOnClickListener(this);
+        subtraction.setOnClickListener(this);
+        multiply.setOnClickListener(this);
+        division.setOnClickListener(this);
+
+        compute.setOnClickListener(this);
+
+        negate.setOnClickListener(this);
+        per.setOnClickListener(this);
+        point.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View view){
         int num  = 0;
         boolean isClearAll = false;
+        char type = '+';
         /**
          * 数字键盘
          */
@@ -125,8 +139,51 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
             Log.i(tag, "clear----"+(isClearAll? "all": "0"));
             this.onClickForClear(isClearAll);
         }
+        /**
+         * 加减乘除
+         */
+        else if(
+                (view == addition && (type = '+') == '+') ||
+                        (view == subtraction && (type = '-') == '-') ||
+                        (view == multiply && (type = '*') == '*') ||
+                        (view == division) && (type = '/') == '/'){
+            Log.i(tag, "type----"+type);
+            this.onClickForOperation(type);
+        }
+        /**
+         * 计算结果
+         */
+        else if(view == compute){
+            Log.i(tag, "计算结果了----");
+            this.onClickForCompute();
+        }
+        /**
+         * 正负号
+         */
+        else if(view == negate){
+            Log.i(tag, "增加正负号----");
+            this.onClickNegate();
+        }
+        /**
+         * 百分号
+         */
+        else if(view == per){
+            Log.i(tag, "百分号----");
+            this.onClickPer();
+        }
+        /**
+         * 小数点
+         */
+        else if(view == point){
+            Log.i(tag, "小数点----");
+            this.onClickPoint();
+        }
     }
 
+    /**
+     * 输入数字
+     * @param num
+     */
     private void onClickForNumber(int num){
         if(result == "0"){
             if(num > 0){
@@ -138,6 +195,10 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         et.setText(result);
     }
 
+    /**
+     * 清除数字
+     * @param isClearAll
+     */
     private void onClickForClear(boolean isClearAll){
         int length = result.length();
         if(isClearAll){
@@ -148,6 +209,84 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
             }else{
                 result = "0";
             }
+        }
+        et.setText(result);
+    }
+
+    /**
+     * 加减乘除操作
+     * @param t
+     */
+    private void onClickForOperation(char t){
+        if(current != ""){
+            this.onClickForCompute();
+        }
+        current = result;
+        result = "0";
+        type = t;
+    }
+
+    /**
+     * 正负号操作
+     */
+    private void onClickNegate(){
+        if(result == "0") return;
+        if(result.charAt(0) == '-'){
+            result = result.substring(1);
+        }else{
+            result = "-" + result;
+        }
+        et.setText(result);
+    }
+
+    /**
+     * 百分号操作
+     */
+    private void onClickPer(){
+        if(result == "0") return;
+        result = "" + (Double.valueOf(result) / 100);
+        et.setText(result);
+    }
+
+    /**
+     * 小数点
+     */
+    private void onClickPoint(){
+        if(result.matches("\\.")){
+            return;
+        }else{
+            result = result + ".";
+        }
+        et.setText(result);
+    }
+
+    /**
+     * 结算结果
+     */
+    private void onClickForCompute(){
+        if(current == "") return;
+        String s = "0";
+        switch (type){
+            case '+':
+                s = "" + (Double.valueOf(result) + Double.valueOf(current));
+                break;
+            case '-':
+                s = "" + (Double.valueOf(current) - Double.valueOf(result));
+                break;
+            case '*':
+                s = "" + (Double.valueOf(current) * Double.valueOf(result));
+                break;
+            case '/':
+                s = "" + (Double.valueOf(current) / Double.valueOf(result));
+                break;
+        }
+        current = "";
+        Log.i(tag, "计算结果了----"+s);
+        String[] arrs= s.split("\\.");
+        if(arrs[1].matches("[1-9]+")){
+            result = s;
+        }else{
+            result = arrs[0];
         }
         et.setText(result);
     }
