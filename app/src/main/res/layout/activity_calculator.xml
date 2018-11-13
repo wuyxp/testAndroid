@@ -172,4 +172,9 @@
                 />
         </TableRow>
     </TableLayout>
+    <Button
+        android:id="@+id/close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="关闭并返回"/>
 </LinearLayout>

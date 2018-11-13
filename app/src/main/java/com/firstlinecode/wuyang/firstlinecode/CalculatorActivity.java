@@ -1,16 +1,19 @@
 package com.firstlinecode.wuyang.firstlinecode;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class CalculatorActivity extends Activity implements View.OnClickListener {
     final private String tag = "key";
 
     private EditText et;
+    private Button close;
     private Button ac;
     private Button c;
     private Button n0;
@@ -41,9 +44,17 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
 
+        Intent intent = getIntent();
+        String data = intent.getStringExtra("data");
+        if(intent != null){
+            Toast.makeText(this,data, Toast.LENGTH_LONG).show();
+        }
+
         /**
          * 获取所有页面元素
          */
+
+        close = (Button) findViewById(R.id.close);
 
         et = (EditText) findViewById(R.id.textView);
         /**
@@ -107,6 +118,8 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         negate.setOnClickListener(this);
         per.setOnClickListener(this);
         point.setOnClickListener(this);
+
+        close.setOnClickListener(this);
 
     }
 
@@ -177,6 +190,14 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
         else if(view == point){
             Log.i(tag, "小数点----");
             this.onClickPoint();
+        }
+
+        /**
+         * 返回
+         */
+        else if(view == close){
+            Log.i(tag, "关闭----");
+            this.onClickClose();
         }
     }
 
@@ -289,5 +310,16 @@ public class CalculatorActivity extends Activity implements View.OnClickListener
             result = arrs[0];
         }
         et.setText(result);
+    }
+
+    /**
+     * 关闭
+     */
+    private void onClickClose(){
+
+        Intent intent = new Intent();
+        intent.putExtra("data",result);
+        this.setResult(101, intent);
+        finish();
     }
 }
